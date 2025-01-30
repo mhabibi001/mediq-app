@@ -143,69 +143,76 @@ const ExamSetup = () => {
   return (
     <div className="exam-container">
       {questions.length === 0 ? (
-        <div>
-          <h2>Test Configuration</h2>
-          <label>Category:</label>
-          <select onChange={handleCategoryChange} value={categoryId}>
-            <option value="">Select Category</option>
-            {categories.map((cat) => (
-              <option key={cat.id} value={cat.id}>
-                {cat.name}
-              </option>
-            ))}
-          </select>
-          <label>Number of Questions:</label>
-          <select
-            onChange={(e) => setSelectedCount(e.target.value)}
-            value={selectedCount}
-            disabled={!questionCountOptions.length}
-          >
-            <option value="">Select Count</option>
-            {questionCountOptions.map((count) => (
-              <option key={count} value={count}>
-                {count}
-              </option>
-            ))}
-          </select>
-          <label>Timer:</label>
-          <select onChange={(e) => setTimer(e.target.value)} value={timer}>
-            <option value="None">No Timer</option>
-            <option value="15">15 minutes</option>
-            <option value="30">30 minutes</option>
-            <option value="45">45 minutes</option>
-            <option value="60">1 hour</option>
-          </select>
-          <button onClick={startExam}>Start Exam</button>
-        </div>
-      ) : (
-        <div>
-          {timeRemaining > 0 && <Timer duration={timeRemaining} onTimeout={handleTimeout} />}
+  <div className="exam-container">
+    <h2>Configure Your Test</h2>
+    <div className="form-group">
+      <label htmlFor="category">Category:</label>
+      <select id="category" onChange={handleCategoryChange} value={categoryId}>
+        <option value="">Select Category</option>
+        {categories.map((cat) => (
+          <option key={cat.id} value={cat.id}>
+            {cat.name}
+          </option>
+        ))}
+      </select>
+    </div>
+    <div className="form-group">
+      <label htmlFor="questionCount">Number of Questions:</label>
+      <select
+        id="questionCount"
+        onChange={(e) => setSelectedCount(e.target.value)}
+        value={selectedCount}
+        disabled={!questionCountOptions.length}
+      >
+        <option value="">Select Count</option>
+        {questionCountOptions.map((count) => (
+          <option key={count} value={count}>
+            {count}
+          </option>
+        ))}
+      </select>
+    </div>
+    <div className="form-group">
+      <label htmlFor="timer">Timer:</label>
+      <select id="timer" onChange={(e) => setTimer(e.target.value)} value={timer}>
+        <option value="None">No Timer</option>
+        <option value="15">15 minutes</option>
+        <option value="30">30 minutes</option>
+        <option value="45">45 minutes</option>
+        <option value="60">1 hour</option>
+      </select>
+    </div>
+    <button onClick={startExam}>Start Exam</button>
+  </div>
+) : (
+  <div className="exam-container">
+    {timeRemaining > 0 && <Timer duration={timeRemaining} onTimeout={handleTimeout} />}
+    <ul>
+      {questions.map((q) => (
+        <li key={q.id} className="exam-question">
+          <h4>{q.question}</h4>
           <ul>
-            {questions.map((q) => (
-              <li key={q.id} className="exam-question">
-                <h4>{q.question}</h4>
-                <ul>
-                  {q.options.map((option) => (
-                    <li key={option}>
-                      <label>
-                        <input
-                          type="radio"
-                          name={`question-${q.id}`}
-                          value={option}
-                          checked={answers[q.id] === option}
-                          onChange={() => handleAnswerSelect(q.id, option)}
-                        />
-                        {option}
-                      </label>
-                    </li>
-                  ))}
-                </ul>
+            {q.options.map((option) => (
+              <li key={option}>
+                <label>
+                  <input
+                    type="radio"
+                    name={`question-${q.id}`}
+                    value={option}
+                    checked={answers[q.id] === option}
+                    onChange={() => handleAnswerSelect(q.id, option)}
+                  />
+                  {option}
+                </label>
               </li>
             ))}
           </ul>
-          <button onClick={handleSubmit}>Submit</button>
-        </div>
-      )}
+        </li>
+      ))}
+    </ul>
+    <button onClick={handleSubmit}>Submit</button>
+  </div>
+)}
     </div>
   );
 };

@@ -18,7 +18,7 @@ const Timer = ({ duration, onTimeout }) => {
     return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
   };
 
-  return <div>Time Remaining: {formatTime(timeLeft)}</div>;
+  return <div className="timer-container">Time Remaining: {formatTime(timeLeft)}</div>;
 };
 
 export default Timer;
