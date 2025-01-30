@@ -1,18 +1,19 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import AddQuestionForm from "./components/Admin/AddQuestionsForm";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Header from "./components/Header";
+import Home from "./components/Home";
+import AddQuestionsForm from "./components/Admin/AddQuestionsForm";
 import ExamSetup from "./components/Exam/ExamSetup";
+import "./App.css";
 
 function App() {
   return (
     <Router>
-      <div className="App">
-        <h1>Welcome to MedIQ</h1>
-        <nav>
-          <Link to="/admin">Admin</Link> | <Link to="/exam">Exam</Link>
-        </nav>
+      <Header />
+      <div className="main-content">
         <Routes>
-          <Route path="/admin" element={<AddQuestionForm />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/admin" element={<AddQuestionsForm />} />
           <Route path="/exam" element={<ExamSetup />} />
         </Routes>
       </div>
