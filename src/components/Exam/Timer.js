@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from "react";
 
 const Timer = ({ duration, onTimeout }) => {
-  const [timeLeft, setTimeLeft] = useState(duration);
+  const [timeLeft, setTimeLeft] = useState(duration * 60); // Convert minutes to seconds
 
   useEffect(() => {
+    if (!duration || duration <= 0) return; // ✅ No timer case
+
     if (timeLeft <= 0) {
       onTimeout();
       return;
     }
+
     const timerId = setInterval(() => setTimeLeft((prev) => prev - 1), 1000);
     return () => clearInterval(timerId);
-  }, [timeLeft, onTimeout]);
+  }, [timeLeft, onTimeout, duration]);
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -18,7 +21,11 @@ const Timer = ({ duration, onTimeout }) => {
     return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
   };
 
-  return <div className="timer-container">Time Remaining: {formatTime(timeLeft)}</div>;
+  return duration > 0 ? (
+    <div>
+      <p>Time Remaining: {formatTime(timeLeft)}</p>
+    </div>
+  ) : null;
 };
 
 export default Timer;

@@ -1,167 +1,121 @@
 import React, { useState, useEffect } from "react";
-import { addQuestion, getCategories } from "../../utils/ApiService";
-import "../../App.css";
+import axios from "axios";
+import "./AddQuestionsForm.css"; // Ensure CSS is applied
 
 const AddQuestionsForm = () => {
+  const [question, setQuestion] = useState("");
+  const [rightAnswer, setRightAnswer] = useState("");
+  const [wrongAnswer1, setWrongAnswer1] = useState("");
+  const [wrongAnswer2, setWrongAnswer2] = useState("");
+  const [wrongAnswer3, setWrongAnswer3] = useState("");
+  const [justification, setJustification] = useState("");
+  const [category, setCategory] = useState("");
   const [categories, setCategories] = useState([]);
-  const [formData, setFormData] = useState({
-    categoryId: "",
-    question: "",
-    rightAnswer: "",
-    wrongAnswer1: "",
-    wrongAnswer2: "",
-    wrongAnswer3: "",
-    justification: "",
-  });
+  const [imageFile, setImageFile] = useState(null);
 
+  // Fetch categories from the backend
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await getCategories();
+        const response = await axios.get("http://localhost:8080/api/admin/categories");
         setCategories(response.data);
       } catch (error) {
-        console.error("Error loading categories:", error);
-        alert("Failed to load categories.");
+        console.error("Error fetching categories:", error);
       }
     };
-
     fetchCategories();
   }, []);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+    if (imageFile) {
+      const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
+      if (!allowedTypes.includes(imageFile.type)) {
+        alert("Only JPG, JPEG, and PNG images are allowed.");
+        return;
+      }
 
-    const payload = {
-      category: { id: formData.categoryId },
-      question: formData.question,
-      rightAnswer: formData.rightAnswer,
-      wrongAnswer1: formData.wrongAnswer1,
-      wrongAnswer2: formData.wrongAnswer2,
-      wrongAnswer3: formData.wrongAnswer3,
-      justification: formData.justification,
+      if (imageFile.size > 10 * 1024 * 1024) {
+        alert("Image size must not exceed 10MB.");
+        return;
+      }
+    }
+
+    // Ensure field names match what the backend expects
+    const questionData = {
+      question,
+      rightAnswer,
+      wrongAnswer1,
+      wrongAnswer2,
+      wrongAnswer3,
+      justification,
+      category: { id: category },
     };
 
-    addQuestion(payload)
-      .then(() => {
-        alert("Question added successfully!");
-        setFormData({
-          categoryId: "",
-          question: "",
-          rightAnswer: "",
-          wrongAnswer1: "",
-          wrongAnswer2: "",
-          wrongAnswer3: "",
-          justification: "",
-        });
-      })
-      .catch((error) => {
-        console.error("Error adding question:", error);
-        alert("Failed to add the question. Please try again.");
+    const formData = new FormData();
+    formData.append("question", new Blob([JSON.stringify(questionData)], { type: "application/json" }));
+    if (imageFile) {
+      formData.append("image", imageFile);
+    }
+
+    try {
+      await axios.post("http://localhost:8080/api/admin/add-question", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
+
+      alert("Question added successfully");
+
+      // ✅ Reset form fields
+      setQuestion("");
+      setRightAnswer("");
+      setWrongAnswer1("");
+      setWrongAnswer2("");
+      setWrongAnswer3("");
+      setJustification("");
+      setCategory("");
+      setImageFile(null);
+      document.getElementById("fileInput").value = ""; // Reset file input
+    } catch (error) {
+      alert("Error adding question: " + error.response?.data || error.message);
+    }
   };
 
   return (
-    <div className="add-question-form">
-      <h2>Add a New Question</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="categoryId">Category:</label>
-          <select
-            name="categoryId"
-            id="categoryId"
-            value={formData.categoryId}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select a Category</option>
-            {categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
-          </select>
-        </div>
+    <form className="add-question-form" onSubmit={handleSubmit}>
+      <label>Question:</label>
+      <input type="text" value={question} onChange={(e) => setQuestion(e.target.value)} required />
 
-        <div className="form-group">
-          <label htmlFor="question">Question:</label>
-          <textarea
-            name="question"
-            id="question"
-            value={formData.question}
-            onChange={handleChange}
-            required
-          />
-        </div>
+      <label>Correct Answer:</label>
+      <input type="text" value={rightAnswer} onChange={(e) => setRightAnswer(e.target.value)} required />
 
-        <div className="form-group">
-          <label htmlFor="rightAnswer">Correct Answer:</label>
-          <input
-            type="text"
-            name="rightAnswer"
-            id="rightAnswer"
-            value={formData.rightAnswer}
-            onChange={handleChange}
-            required
-          />
-        </div>
+      <label>Wrong Answer 1:</label>
+      <input type="text" value={wrongAnswer1} onChange={(e) => setWrongAnswer1(e.target.value)} required />
 
-        <div className="form-group">
-          <label htmlFor="wrongAnswer1">Wrong Answer 1:</label>
-          <input
-            type="text"
-            name="wrongAnswer1"
-            id="wrongAnswer1"
-            value={formData.wrongAnswer1}
-            onChange={handleChange}
-            required
-          />
-        </div>
+      <label>Wrong Answer 2:</label>
+      <input type="text" value={wrongAnswer2} onChange={(e) => setWrongAnswer2(e.target.value)} required />
 
-        <div className="form-group">
-          <label htmlFor="wrongAnswer2">Wrong Answer 2:</label>
-          <input
-            type="text"
-            name="wrongAnswer2"
-            id="wrongAnswer2"
-            value={formData.wrongAnswer2}
-            onChange={handleChange}
-            required
-          />
-        </div>
+      <label>Wrong Answer 3:</label>
+      <input type="text" value={wrongAnswer3} onChange={(e) => setWrongAnswer3(e.target.value)} required />
 
-        <div className="form-group">
-          <label htmlFor="wrongAnswer3">Wrong Answer 3:</label>
-          <input
-            type="text"
-            name="wrongAnswer3"
-            id="wrongAnswer3"
-            value={formData.wrongAnswer3}
-            onChange={handleChange}
-            required
-          />
-        </div>
+      <label>Justification:</label>
+      <input type="text" value={justification} onChange={(e) => setJustification(e.target.value)} required />
 
-        <div className="form-group">
-          <label htmlFor="justification">Justification:</label>
-          <textarea
-            name="justification"
-            id="justification"
-            value={formData.justification}
-            onChange={handleChange}
-            required
-          />
-        </div>
+      <label>Category:</label>
+      <select value={category} onChange={(e) => setCategory(e.target.value)} required>
+        <option value="">Select a category</option>
+        {categories.map((cat) => (
+          <option key={cat.id} value={cat.id}>{cat.name}</option>
+        ))}
+      </select>
 
-        <button type="submit" className="submit-button">
-          Submit Question
-        </button>
-      </form>
-    </div>
+      <label>Upload Image:</label>
+      <input id="fileInput" type="file" accept="image/jpeg, image/jpg, image/png" onChange={(e) => setImageFile(e.target.files[0])} />
+
+      <button type="submit">Add Question</button>
+    </form>
   );
 };
 
