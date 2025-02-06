@@ -5,7 +5,7 @@ import "./Exam.css";
 import Header from "../Header";
 import Footer from "../Footer";
 
-const S3_BUCKET_URL = "https://mediq-app.s3.amazonaws.com/";
+const S3_BUCKET_URL = "https://mediq-app.s3.amazonaws.com/question-image/";
 
 const Exam = ({ questions = [], onSubmit, timerDuration }) => {
   const [answers, setAnswers] = useState({});
