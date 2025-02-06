@@ -12,6 +12,7 @@ const AddQuestionsForm = () => {
   const [category, setCategory] = useState("");
   const [categories, setCategories] = useState([]);
   const [imageFile, setImageFile] = useState(null);
+  const [justificationImageFile, setJustificationImageFile] = useState(null);
 
   // Fetch categories from the backend
   useEffect(() => {
@@ -29,15 +30,28 @@ const AddQuestionsForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
+
+    // Validate Question Image
     if (imageFile) {
-      const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
       if (!allowedTypes.includes(imageFile.type)) {
-        alert("Only JPG, JPEG, and PNG images are allowed.");
+        alert("Only JPG, JPEG, and PNG images are allowed for question image.");
         return;
       }
-
       if (imageFile.size > 10 * 1024 * 1024) {
-        alert("Image size must not exceed 10MB.");
+        alert("Question image size must not exceed 10MB.");
+        return;
+      }
+    }
+
+    // Validate Justification Image
+    if (justificationImageFile) {
+      if (!allowedTypes.includes(justificationImageFile.type)) {
+        alert("Only JPG, JPEG, and PNG images are allowed for justification image.");
+        return;
+      }
+      if (justificationImageFile.size > 10 * 1024 * 1024) {
+        alert("Justification image size must not exceed 10MB.");
         return;
       }
     }
@@ -55,8 +69,12 @@ const AddQuestionsForm = () => {
 
     const formData = new FormData();
     formData.append("question", new Blob([JSON.stringify(questionData)], { type: "application/json" }));
+
     if (imageFile) {
       formData.append("image", imageFile);
+    }
+    if (justificationImageFile) {
+      formData.append("justificationImage", justificationImageFile);
     }
 
     try {
@@ -77,9 +95,11 @@ const AddQuestionsForm = () => {
       setJustification("");
       setCategory("");
       setImageFile(null);
-      document.getElementById("fileInput").value = ""; // Reset file input
+      setJustificationImageFile(null);
+      document.getElementById("fileInput").value = ""; // Reset question image input
+      document.getElementById("justificationFileInput").value = ""; // Reset justification image input
     } catch (error) {
-      alert("Error adding question: " + error.response?.data || error.message);
+      alert("Error adding question: " + (error.response?.data || error.message));
     }
   };
 
@@ -111,8 +131,11 @@ const AddQuestionsForm = () => {
         ))}
       </select>
 
-      <label>Upload Image:</label>
+      <label>Upload Question Image:</label>
       <input id="fileInput" type="file" accept="image/jpeg, image/jpg, image/png" onChange={(e) => setImageFile(e.target.files[0])} />
+
+      <label>Upload Justification Image:</label>
+      <input id="justificationFileInput" type="file" accept="image/jpeg, image/jpg, image/png" onChange={(e) => setJustificationImageFile(e.target.files[0])} />
 
       <button type="submit">Add Question</button>
     </form>

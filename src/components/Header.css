@@ -1,9 +1,10 @@
 /* Header Styling */
 .header {
     display: flex;
+    justify-content: space-between;
     align-items: center;
     background: linear-gradient(135deg, #007bff, #0056b3);
-    padding: 15px 50px;
+    padding: 20px 60px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     color: white;
     position: fixed;
@@ -13,15 +14,21 @@
     z-index: 1000;
 }
 
-/* Left Section: MedIQ + Navigation */
+/* Left Section: Logo + MedIQ Name */
 .header-left {
     display: flex;
     align-items: center;
-    gap: 30px; /* Space between MedIQ and navigation links */
+    gap: 15px;
 }
 
-/* Logo Styling */
-.logo {
+/* MedIQ Logo Image */
+.logo-image {
+    width: 50px;
+    height: 50px;
+}
+
+/* MedIQ Logo Text */
+.logo-text {
     font-size: 26px;
     font-weight: bold;
     margin: 0;
@@ -30,21 +37,20 @@
 
 /* Navigation Bar */
 .navbar {
+    flex-grow: 1;
     display: flex;
-    align-items: center;
+    justify-content: flex-start;
+    margin-left: 565px;
+    padding: 10px 20px;
 }
 
 /* Navigation Links */
 .nav-links {
     list-style: none;
     display: flex;
-    gap: 25px;
-    padding: 0;
+    gap: 30px;
+    padding: 5px 20px;
     margin: 0;
-}
-
-.nav-links li {
-    display: inline-block;
 }
 
 /* Navigation Items */
@@ -58,6 +64,12 @@
     border-radius: 6px;
 }
 
+/* Active Navigation Item */
+.nav-item.active {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Hover Effect */
 .nav-item:hover {
     background: rgba(255, 255, 255, 0.2);
 }
@@ -66,24 +78,34 @@
 @media (max-width: 768px) {
     .header {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
         padding: 15px;
     }
 
     .header-left {
         flex-direction: row;
         align-items: center;
-        gap: 15px;
+        gap: 10px;
+    }
+
+    .navbar {
         width: 100%;
+        justify-content: flex-start;
+        margin-left: 10px;
+        padding: 10px;
     }
 
     .nav-links {
         flex-direction: row;
-        gap: 10px;
-        margin-left: 10px;
+        gap: 15px;
     }
 
     .nav-item {
         font-size: 16px;
+    }
+
+    .logo-image {
+        width: 40px;
+        height: 40px;
     }
 }

@@ -2,8 +2,6 @@ import React, { useEffect } from "react";
 import "./ExamSummary.css";
 import { useNavigate } from "react-router-dom";
 
-const S3_BUCKET_URL = "https://mediq-app.s3.amazonaws.com/";
-
 const ExamSummary = ({ questions = [], answers = {} }) => { 
   const navigate = useNavigate();
 
@@ -24,6 +22,9 @@ const ExamSummary = ({ questions = [], answers = {} }) => {
       
       {/* Top Buttons */}
       <div className="exam-summary-actions top-buttons">
+      <button className="retake-button" onClick={() => navigate("/exam", { state: { resetExam: true } })}>
+          Retake Exam
+        </button>
         <button className="exit-button" onClick={() => navigate("/")}>Exit</button>
       </div>
 
@@ -32,23 +33,21 @@ const ExamSummary = ({ questions = [], answers = {} }) => {
 
       <ul className="exam-summary-list">
         {questions.map(q => {
-          const isCorrect = answers[q.id] === q.rightAnswer;
+          let justificationImageUrl = q.justificationImageUrl;
+          if (justificationImageUrl && !justificationImageUrl.startsWith("http")) {
+            justificationImageUrl = `https://mediq-app.s3.us-east-2.amazonaws.com/justification/${justificationImageUrl}`;
+          } else if (!justificationImageUrl && q.justificationImageName && q.justificationImageName.startsWith("http")) {
+            justificationImageUrl = q.justificationImageName;
+          }
 
           return (
             <li key={q.id} className="exam-summary-item">
-              <h4>
-                {q.question} 
-                {answers[q.id] ? (
-                  isCorrect ? <span className="correct-badge">✅ Correct</span> : <span className="incorrect-badge">❌ Incorrect</span>
-                ) : (
-                  <span className="unanswered-badge">⚠️ Not Answered</span>
-                )}
-              </h4>
+              <h4>{q.question}</h4>
 
-              {q.imageUrl && (
+              {justificationImageUrl && (
                 <img
-                  src={q.imageUrl.startsWith("http") ? q.imageUrl : `${S3_BUCKET_URL}${q.imageUrl}`}
-                  alt="Question"
+                  src={justificationImageUrl}
+                  alt="Justification"
                   className="exam-summary-image"
                   onError={(e) => {
                     console.error("Image failed to load:", e.target.src);
@@ -70,6 +69,9 @@ const ExamSummary = ({ questions = [], answers = {} }) => {
 
       {/* Bottom Buttons */}
       <div className="exam-summary-actions bottom-buttons">
+        <button className="retake-button" onClick={() => navigate("/exam", { state: { resetExam: true } })}>
+          Retake Exam
+        </button>
         <button className="exit-button" onClick={() => navigate("/")}>Exit</button>
       </div>
     </div>

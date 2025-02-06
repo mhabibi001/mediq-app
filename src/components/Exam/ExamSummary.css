@@ -96,12 +96,14 @@
 /* Exam Summary Image */
 .exam-summary-image {
     display: block;
-    max-width: 100%;
+    max-width: 80%;
+    margin: 15px auto;
     height: auto;
     margin-top: 15px;
     border-radius: 6px;
     border: 1px solid #ddd;
 }
+
 
 /* Justification */
 .justification {
@@ -136,7 +138,7 @@
 .retake-button {
     padding: 12px 20px;
     border: none;
-    background: #007bff;
+    background: #28a745;
     color: white;
     font-size: 18px;
     border-radius: 8px;
@@ -146,7 +148,7 @@
 }
 
 .retake-button:hover {
-    background: #0056b3;
+    background: #218838;
 }
 
 /* Exit Button */
@@ -181,3 +183,4 @@
         width: 100%;
     }
 }
+

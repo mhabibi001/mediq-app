@@ -5,8 +5,7 @@ import AddQuestionsForm from "./components/Admin/AddQuestionsForm";
 import ExamSetup from "./components/Exam/ExamSetup";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import "./App.css"; // ✅ Ensure global styles apply
-
+import "./App.css"; 
 const App = () => {
   return (
     <Router>
