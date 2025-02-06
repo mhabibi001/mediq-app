@@ -1,0 +1,89 @@
+/* Header Styling */
+.header {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    padding: 15px 50px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    color: white;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+/* Left Section: MedIQ + Navigation */
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 30px; /* Space between MedIQ and navigation links */
+}
+
+/* Logo Styling */
+.logo {
+    font-size: 26px;
+    font-weight: bold;
+    margin: 0;
+    letter-spacing: 1px;
+}
+
+/* Navigation Bar */
+.navbar {
+    display: flex;
+    align-items: center;
+}
+
+/* Navigation Links */
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-links li {
+    display: inline-block;
+}
+
+/* Navigation Items */
+.nav-item {
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    transition: all 0.3s ease-in-out;
+    padding: 10px 15px;
+    border-radius: 6px;
+}
+
+.nav-item:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px;
+    }
+
+    .header-left {
+        flex-direction: row;
+        align-items: center;
+        gap: 15px;
+        width: 100%;
+    }
+
+    .nav-links {
+        flex-direction: row;
+        gap: 10px;
+        margin-left: 10px;
+    }
+
+    .nav-item {
+        font-size: 16px;
+    }
+}

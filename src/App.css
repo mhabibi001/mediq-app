@@ -1,195 +1,127 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* General App Styling */
+.app-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #f8f9fa;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Exam Setup Form Styling */
-.exam-container {
-  width: 80%;
-  max-width: 1000px; /* Increase width */
-  margin: 20px auto;
-  padding: 20px;
-  background-color: #ffffff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  font-family: Arial, sans-serif;
-  text-align: left;
+/* Expanding the Application Layout */
+.main-content {
+  flex: 1;
+  width: 100%;
+  max-width: 1600px; /* Increased max width */
+  padding: 40px 60px;
+  margin: auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+  position: relative; /* Ensure it's properly positioned */
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  align-items: center;
 }
 
-.exam-container h2 {
-  text-align: Left;
-  margin-bottom: 20px;
-  color: #333;
+/* Fixed Header */
+.header {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #007bff;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px 0;
+  height: 60px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
 }
 
-.exam-container label {
-  display: block;
-  margin-top: 10px;
+/* Fixed Footer */
+.footer {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  background: #007bff;
+  color: white;
+  text-align: center;
+  padding: 12px 0;
+  font-size: 14px;
+  z-index: 1000;
+}
+
+
+/* Home Icon Styling */
+.home-icon {
+  position: absolute;
+  left: 20px;
+  font-size: 24px;
+  color: white;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.home-icon:hover {
+  color: #f8f9fa;
+  transform: scale(1.1);
+}
+
+/* Header Title */
+.header-title {
+  font-size: 22px;
   font-weight: bold;
-  color: #555;
 }
 
-.exam-container select {
+/* Footer Styling */
+.footer {
   width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  background: #333;
+  color: white;
+  text-align: center;
+  padding: 12px 0;
+  font-size: 14px;
+  z-index: 1000;
 }
 
-.exam-container button {
-  display: block;
-  width: 100%;
-  margin-top: 20px;
-  padding: 10px;
+/* Home Page Styling */
+.home-container {
+  text-align: center;
+  padding: 50px 20px;
+}
+
+/* Module Options */
+.module-options {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+/* Module Cards */
+.module-card {
+  width: 250px;
+  padding: 20px;
   background-color: #007bff;
   color: white;
-  font-size: 16px;
+  text-align: center;
+  border-radius: 8px;
+  text-decoration: none;
   font-weight: bold;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-.exam-container button:hover {
+.module-card:hover {
   background-color: #0056b3;
-}
-
-/* Exam Page Styling */
-.exam-container {
-  width: 80%;
-  max-width: 900px;
-  margin: 20px auto;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  font-family: Arial, sans-serif;
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  gap: 20px; /* Adds spacing between questions */
-}
-
-.exam-container > * {
-  margin-bottom: 15px;
-}
-
-.exam-container h2 {
-  text-align: center; /* Keep header centered */
-  margin-bottom: 20px;
-  color: #333;
-}
-
-.exam-container label {
-  display: block;
-  margin-top: 10px;
-  font-weight: bold;
-  color: #555;
-}
-
-.exam-container select,
-.exam-container button {
-  display: block;
-  width: 100%;
-  margin-top: 10px;
-}
-
-.exam-question {
-  width: 100%;
-  padding: 3px;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  text-align: left;
-  margin-bottom: 20px; /* Add space between questions */
-  overflow: hidden; /* Prevent content overflow */
-}
-
-/* Fix spacing inside questions */
-.exam-question h4 {
-  margin-bottom: 10px;
-  font-weight: bold;
-}
-
-.exam-question ul {
-  padding: 0;
-  list-style: none;
-}
-
-.exam-question li {
-  margin-bottom: 10px;
-}
-
-.exam-question input[type="radio"] {
-  margin-right: 10px;
-}
-
-.exam-summary {
-  margin-top: 20px;
-  text-align: left; /* Ensure summary is left-aligned */
-}
-
-.exam-summary h2,
-.exam-summary h3 {
-  text-align: center; /* Keep summary headers centered */
-  color: #333;
-}
-
-.exam-summary .exam-summary-item {
-  padding: 10px;
-  border-radius: 8px;
-  margin-bottom: 10px;
-}
-
-.exam-summary .exam-summary-item.correct {
-  background-color: #d4edda;
-  color: #155724;
-}
-
-.exam-summary .exam-summary-item.incorrect {
-  background-color: #f8d7da;
-  color: #721c24;
+  transform: translateY(-5px);
 }
 
 /* Timer Styling */
@@ -202,75 +134,9 @@
   text-align: left;
 }
 
-
-ul {
-  list-style: none;
-  padding: 0;
-}
-
-li {
-  margin-bottom: 15px;
-}
-
-label {
-  cursor: pointer;
-}
-
-input[type="radio"] {
-  margin-right: 10px;
-}
-
-.progress-bar {
-  width: 100%;
-  height: 10px;
-  background-color: #ddd;
-  border-radius: 5px;
-  overflow: hidden;
-  margin-top: 10px;
-}
-
-.progress-bar-fill {
-  height: 100%;
-  background-color: #4CAF50;
-  transition: width 0.5s ease-in-out;
-}
-
-/* Correct and Incorrect Answer Styling */
-.correct-answer {
-  color: #28a745;
-  font-weight: bold;
-}
-
-.incorrect-answer {
-  color: #dc3545;
-  font-weight: bold;
-}
-
-/* Enhanced Badges for Correct/Incorrect Answers */
-.badge {
-  display: inline-block;
-  margin-left: 10px;
-  padding: 5px 15px;
-  border-radius: 15px;
-  font-size: 14px;
-  font-weight: bold;
-  text-transform: uppercase;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.badge-correct {
-  background-color: #28a745;
-  color: white;
-}
-
-.badge-incorrect {
-  background-color: #dc3545;
-  color: white;
-}
-
-/* Add Questions Form Styling */
+/* Add Questions Form */
 .add-question-form {
-  width: 50%;
+  width: 60%;
   margin: 20px auto;
   padding: 20px;
   background-color: #f9f9f9;
@@ -280,7 +146,7 @@ input[type="radio"] {
 }
 
 .add-question-form h2 {
-  text-align: Left;
+  text-align: left;
   margin-bottom: 20px;
   color: #333;
 }
@@ -314,7 +180,7 @@ textarea {
 button.submit-button {
   display: block;
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   background-color: #28a745;
   color: white;
   font-size: 16px;
@@ -328,102 +194,10 @@ button.submit-button:hover {
   background-color: #218838;
 }
 
-/* General App Container */
-.app-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-/* Header Styling */
-/* Header */
-.header {
-  background-color: #007bff;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 5px 0;
-  height: 50px;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
-  position: relative;
-}
-
-/* Home Icon Styling */
-.home-icon {
-  position: absolute;
-  left: 20px;
-  font-size: 24px;
-  color: white;
-  text-decoration: none;
-  transition: 0.3s;
-}
-
-.home-icon:hover {
-  color: #f8f9fa;
-  transform: scale(1.1);
-}
-
-/* Header Title */
-.header-title {
-  font-size: 20px;
-  font-weight: bold;
-}
-
-/* Footer Styling */
-.footer {
-  background-color: #333;
-  color: white;
-  text-align: center;
-  padding: 10px 0;
-  font-size: 14px;
-  position: relative;
-  bottom: 0;
-  width: 100%;
-}
-
-/* Main Content Area */
-.main-content {
-  flex: 1;
-  padding: 20px;
-}
-
-/* Home Page Styling */
-.home-container {
-  text-align: center;
-  padding: 50px 20px;
-}
-
-.module-options {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin-top: 30px;
-}
-
-.module-card {
-  width: 250px;
-  padding: 20px;
-  background-color: #007bff;
-  color: white;
-  text-align: center;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: bold;
-  transition: 0.3s;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-}
-
-.module-card:hover {
-  background-color: #0056b3;
-  transform: translateY(-5px);
-}
-
-.module-card h3 {
-  margin: 0;
-}
-
-.module-card p {
-  margin-top: 10px;
-  font-size: 14px;
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .main-content {
+      width: 98%;
+      padding: 30px;
+  }
 }

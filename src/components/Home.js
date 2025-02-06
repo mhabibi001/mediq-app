@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "../App.css"; // Ensure styles apply
+import "../App.css";
 
 const Home = () => {
   return (
