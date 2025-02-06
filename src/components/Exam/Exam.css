@@ -282,3 +282,17 @@ body {
     align-items: center;
 }
 
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .exam-container {
+        width: 90%;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .exam-container {
+        width: 100%;
+        padding: 10px;
+    }
+}
