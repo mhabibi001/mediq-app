@@ -1,48 +1,39 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
-import "./Header.css";
-import logo from "../assets/logo512.png";
+import React, { useContext } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
+import { FaHome, FaSignOutAlt } from "react-icons/fa";
+import "../styles/Header.css";
 
 const Header = () => {
-  return (
-    <header className="header">
-      {/* Left Section: Logo + MedIQ Name */}
-      <div className="header-left">
-        <img src={logo} alt="MedIQ Logo" className="logo-image" />
-        <h1 className="logo-text">MedIQ</h1>
-      </div>
+    const { user, logout } = useContext(AuthContext); // Use AuthContext to check auth status
+    const location = useLocation();
 
-      {/* Centered Navigation */}
-      <nav className="navbar">
-        <ul className="nav-links">
-          <li>
-            <NavLink
-              to="/"
-              className={({ isActive }) => (isActive ? "nav-item active" : "nav-item")}
-            >
-              Home
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/admin"
-              className={({ isActive }) => (isActive ? "nav-item active" : "nav-item")}
-            >
-              Admin
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/exam"
-              className={({ isActive }) => (isActive ? "nav-item active" : "nav-item")}
-            >
-              Exam
-            </NavLink>
-          </li>
-        </ul>
-      </nav>
-    </header>
-  );
+    const isAuthenticated = !!user; // ✅ Fix authentication check
+
+    // Hide buttons on login & register pages
+    const hideButtons = location.pathname === "/login" || location.pathname === "/register";
+
+    return (
+        <header className="header">
+            <div className="header-left">
+                {isAuthenticated && !hideButtons && (
+                    <Link to="/dashboard" className="home-btn">
+                        <FaHome className="icon" /> Home
+                    </Link>
+                )}
+            </div>
+            <div className="header-center">
+                <h1 className="header-title">MedIQ</h1>
+            </div>
+            <div className="header-right">
+                {isAuthenticated && !hideButtons && (
+                    <button className="logout-btn" onClick={logout}>
+                        <FaSignOutAlt className="icon" /> Logout
+                    </button>
+                )}
+            </div>
+        </header>
+    );
 };
 
 export default Header;

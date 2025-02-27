@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Timer from "./Timer";
 import ExamSummary from "./ExamSummary";
-import "./Exam.css";
+import "../../styles/Exam.css";
 import Header from "../Header";
 import Footer from "../Footer";
 
@@ -35,39 +35,40 @@ const Exam = ({ questions = [], onSubmit, timerDuration }) => {
   const progress = totalQuestions > 0 ? (answeredCount / totalQuestions) * 100 : 0;
 
   return (
-    <div className="exam-page">
+    <div className="exam-page-container">
+      {/* Fixed Header */}
       <Header />
 
-      {/* Fixed Timer & Progress Bar */}
-      <div className="fixed-top-container">
-        {timerDuration > 0 && <Timer duration={timerDuration} onTimeout={handleSubmit} />}
-        <div className="progress-bar-container">
-          <div className="progress-bar">
-            <div className="progress-fill" style={{ width: `${progress}%` }}>
-              <span className="progress-text">{Math.round(progress)}%</span>
-            </div>
+      {/* Fixed Progress Bar Below Header */}
+      <div className="exam-progress-wrapper">
+        <div className="exam-progress-container">
+          <div className="exam-progress-bar">
+            <div className="exam-progress-fill" style={{ width: `${progress}%` }}></div>
           </div>
+          {timerDuration > 0 && (
+            <span className="exam-timer">
+              <Timer duration={timerDuration} onTimeout={handleSubmit} />
+            </span>
+          )}
         </div>
       </div>
 
-      <div className="main-content">
-        {/* Exam Content */}
-        <div className="exam-container">
-          <ul className="exam-questions">
+      {/* Exam Content Below Progress Bar */}
+      <div className="exam-content-wrapper">
+        <div className="exam-questions-container">
+          <ul className="exam-questions-list">
             {questions.map((q, index) => (
-              <li key={q.id} className="exam-question">
-                {/* Ensure question number and text are inline */}
+              <li key={q.id} className="exam-question-item">
                 <h4 className="exam-question-title">
-                  <span className="question-number">{index + 1}. </span>
-                  <span className="question-text">{q.question}</span>
+                  <span className="exam-question-number">{index + 1}. </span>
+                  <span className="exam-question-text">{q.question}</span>
                 </h4>
 
-                {/* Ensure the image remains inside the container */}
                 {q.imageUrl && (
                   <img
                     src={q.imageUrl.startsWith("http") ? q.imageUrl : `${S3_BUCKET_URL}${q.imageUrl}`}
                     alt={`Question ${index + 1}`}
-                    className="exam-image"
+                    className="exam-question-image"
                     onError={(e) => {
                       console.error("Image failed to load:", e.target.src);
                       e.target.style.display = "none";
@@ -75,10 +76,10 @@ const Exam = ({ questions = [], onSubmit, timerDuration }) => {
                   />
                 )}
 
-                <ul className="exam-options">
+                <ul className="exam-answer-options">
                   {q.options.map((option) => (
-                    <li key={option} className="exam-option">
-                      <label className="option-label">
+                    <li key={option} className="exam-answer-option">
+                      <label className="exam-answer-label">
                         <input
                           type="radio"
                           name={`question-${q.id}`}
@@ -86,7 +87,7 @@ const Exam = ({ questions = [], onSubmit, timerDuration }) => {
                           checked={answers[q.id] === option}
                           onChange={() => handleAnswerSelect(q.id, option)}
                         />
-                        <span className="option-text">{option}</span>
+                        <span className="exam-answer-text">{option}</span>
                       </label>
                     </li>
                   ))}
@@ -94,7 +95,7 @@ const Exam = ({ questions = [], onSubmit, timerDuration }) => {
               </li>
             ))}
           </ul>
-          <button className="submit-button" onClick={handleSubmit}>Submit</button>
+          <button className="exam-submit-btn" onClick={handleSubmit}>Submit</button>
         </div>
       </div>
 

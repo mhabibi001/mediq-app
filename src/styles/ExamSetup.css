@@ -1,0 +1,167 @@
+/* Match Background with Exam Page */
+body {
+    background: linear-gradient(to right, #1d4e68, #2d6a91);
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Wrapper to Center the Setup Box */
+.exam-setup-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden; /* Prevents page scrolling */
+}
+
+/* Centered Exam Setup Box */
+.exam-setup-container {
+    width: 100%;
+    max-width: 500px;
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Show only when the page is ExamSetup */
+.exam-setup-visible .exam-setup-container {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Exam Setup Title */
+.setup-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+/* Form Groups */
+.form-group {
+    width: 100%;
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+
+/* Styled Dropdowns */
+.form-group select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    background: #fff;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.form-group select:hover {
+    border-color: #007bff;
+}
+
+/* Start Exam Button */
+.start-exam-button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    background: #28a745; /* Green color */
+    color: white;
+    font-size: 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s ease-in-out;
+}
+
+.start-exam-button:hover {
+    background: #218838;
+}
+
+.start-exam-button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+/* Fixed Header */
+.exam-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: white;
+    padding: 15px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+/* Fixed Footer */
+.exam-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: black;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    z-index: 1000;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .exam-setup-container {
+        max-width: 90%;
+        padding: 20px;
+    }
+
+    .setup-title {
+        font-size: 22px;
+    }
+
+    .start-exam-button {
+        font-size: 16px;
+        padding: 10px;
+    }
+
+    .form-group select {
+        font-size: 14px;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .exam-setup-container {
+        max-width: 100%;
+        padding: 10px;
+    }
+
+    .setup-title {
+        font-size: 20px;
+    }
+
+    .start-exam-button {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .form-group select {
+        font-size: 14px;
+        padding: 8px;
+    }
+}

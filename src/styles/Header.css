@@ -1,0 +1,99 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #2983e3;
+    padding: 15px 20px;
+    color: white;
+    border-radius: 8px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 40px; /* Adjust based on your preference */
+    z-index: 1000;
+}
+
+/* Ensures elements are positioned correctly */
+.header-left {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.header-center {
+    flex: 2;
+    text-align: center;
+}
+
+.header-right {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 20px; /* Ensures proper spacing on the right */
+}
+
+/* Title styling */
+.header-title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Button & Link Styling */
+.home-btn, .logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+/* Home button */
+.home-btn {
+    font-size: 16px;
+    padding: 8px 20px;
+}
+
+/* Logout button */
+.logout-btn {
+    font-size: 16px;
+    padding: 8px 20px;
+}
+
+/* Icons */
+.icon {
+    font-size: 18px;
+}
+
+/* Hover Effects */
+.home-btn:hover {
+    color: #d0e1ff;
+}
+
+.logout-btn:hover {
+    background: rgba(255, 230, 230, 0.2);
+    border-radius: 5px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .header-left, .header-right {
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+}
