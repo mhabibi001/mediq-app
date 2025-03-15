@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Exam from "./Exam";
-import "./Exam.css";
+import "../../styles/ExamSetup.css";
 
 const ExamSetup = () => {
   const location = useLocation();
@@ -15,7 +15,6 @@ const ExamSetup = () => {
   const [examStarted, setExamStarted] = useState(false);
   const [questions, setQuestions] = useState([]);
 
-  // ✅ Reset exam when retaking
   useEffect(() => {
     if (location.state?.resetExam) {
       console.log("Resetting Exam State...");
@@ -24,69 +23,108 @@ const ExamSetup = () => {
       setSelectedCount("");
       setTimerDuration(null);
       setQuestions([]);
-
+  
       navigate("/exam", { replace: true, state: {} });
     }
   }, [location.state, navigate]);
-
+  
   // ✅ Fetch categories
   useEffect(() => {
-    fetch("http://localhost:8080/api/admin/categories")
-      .then((res) => res.json())
-      .then((data) => setCategories(data))
-      .catch((error) => console.error("Error fetching categories:", error));
+    const fetchCategories = async () => {
+      try {
+        const token = sessionStorage.getItem("token"); // Retrieve JWT token
+        if (!token) {
+          console.error("No authentication token found.");
+          return;
+        }
+  
+        const response = await fetch("http://localhost:8080/api/categories", {
+          headers: { Authorization: `Bearer ${token}` }, // Attach token in the request
+        });
+  
+        if (!response.ok) throw new Error("Failed to fetch categories");
+  
+        const data = await response.json();
+        setCategories(data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+  
+    fetchCategories();
   }, []);
-
-  // ✅ Fetch max questions for selected category
+  
   useEffect(() => {
-    if (selectedCategory) {
-      fetch(`http://localhost:8080/api/exam/questions/count?categoryId=${selectedCategory}`)
-        .then((res) => res.json())
-        .then((data) => {
-          const count = data.count || 0;
-          setMaxQuestions(count);
+    const fetchQuestionCount = async () => {
+        if (!selectedCategory) return;
 
-          // ✅ Prepopulate if only one option is available
-          if (count > 0 && count <= 10) {
-            setSelectedCount(count.toString());
-          }
-        })
-        .catch((error) => console.error("Error fetching question count:", error));
-    }
-  }, [selectedCategory]);
+        try {
+            console.log(`Fetching question count for category: ${selectedCategory}`); // Debugging
 
-  // ✅ Generate options for question count (increment by 10, last option is max)
-  const getQuestionOptions = () => {
-    const options = [];
-    for (let i = 10; i <= maxQuestions; i += 10) {
-      options.push(i);
-    }
-    if (maxQuestions > 0 && !options.includes(maxQuestions)) {
-      options.push(maxQuestions);
-    }
-    return options;
-  };
+            const token = sessionStorage.getItem("token");
+            if (!token) {
+                console.error("No authentication token found.");
+                return;
+            }
 
-  // ✅ Timer options (10-60 mins, or "No Timer")
-  const getTimerOptions = () => {
-    const options = [{ value: null, label: "No Timer" }];
-    for (let i = 10; i <= 60; i += 10) {
-      options.push({ value: i, label: `${i} Minutes` });
-    }
-    return options;
-  };
+            const response = await fetch(`http://localhost:8080/api/exam/questions/count?categoryId=${selectedCategory}`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`Failed to fetch question count: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log("Fetched question count data:", data); // Debugging
+
+            const count = data.count || 0;
+            setMaxQuestions(count);
+
+            // Ensure that if only a small number of questions exist, the dropdown updates accordingly
+            if (count > 0 && count <= 10) {
+                setSelectedCount(count.toString());
+            }
+
+        } catch (error) {
+            console.error("Error fetching question count:", error);
+        }
+    };
+
+    fetchQuestionCount();
+}, [selectedCategory]);
+
 
   const handleStartExam = async () => {
     if (!selectedCategory || !selectedCount) {
       alert("Please select a category and question count.");
       return;
     }
-
+  
     try {
+      const token = sessionStorage.getItem("token"); // Retrieve JWT token
+      if (!token) {
+        console.error("No authentication token found.");
+        return;
+      }
+  
       const response = await fetch(
-        `http://localhost:8080/api/exam/questions?categoryId=${selectedCategory}&count=${selectedCount}`
+        `http://localhost:8080/api/exam/questions?categoryId=${selectedCategory}&count=${selectedCount}`,
+        {
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+          }
+        }
       );
-      if (!response.ok) throw new Error("Failed to load questions.");
+  
+      if (!response.ok) throw new Error(`Failed to load questions: ${response.status}`);
+  
       const data = await response.json();
       setQuestions(data);
       setExamStarted(true);
@@ -97,7 +135,7 @@ const ExamSetup = () => {
   };
 
   return (
-    <div className="exam-setup-wrapper">
+    <div className={`exam-setup-wrapper ${!examStarted ? "exam-setup-visible" : ""}`}>
       <div className="exam-setup-container">
         {!examStarted ? (
           <>
@@ -122,20 +160,25 @@ const ExamSetup = () => {
 
             {/* Select Number of Questions */}
             <div className="form-group">
-              <label>Number of Questions:</label>
-              <select
-                value={selectedCount}
-                onChange={(e) => setSelectedCount(e.target.value)}
-                disabled={!selectedCategory || maxQuestions === 0}
-              >
-                <option value="">Select number of questions</option>
-                {getQuestionOptions().map((num) => (
-                  <option key={num} value={num}>
-                    {num}
-                  </option>
-                ))}
-              </select>
+                <label>Number of Questions:</label>
+                <select
+                    value={selectedCount}
+                    onChange={(e) => setSelectedCount(e.target.value)}
+                    disabled={!selectedCategory || maxQuestions === 0}
+                >
+                    <option value="">Select number of questions</option>
+                    {maxQuestions > 0 ? (
+                        Array.from({ length: Math.ceil(maxQuestions / 10) }, (_, i) => (i + 1) * 10).map((num) => (
+                            <option key={num} value={num}>
+                                {num > maxQuestions ? maxQuestions : num} {/* Adjusts if maxQuestions is not a multiple of 10 */}
+                            </option>
+                        ))
+                    ) : (
+                        <option disabled>No questions available</option>
+                    )}
+                </select>
             </div>
+
 
             {/* Select Timer Duration */}
             <div className="form-group">
@@ -144,9 +187,10 @@ const ExamSetup = () => {
                 value={timerDuration || ""}
                 onChange={(e) => setTimerDuration(e.target.value ? Number(e.target.value) : null)} 
               >
-                {getTimerOptions().map((option) => (
-                  <option key={option.value} value={option.value || ""}>
-                    {option.label}
+                <option value="">No Timer</option>
+                {Array.from({ length: 6 }, (_, i) => (i + 1) * 10).map((num) => (
+                  <option key={num} value={num}>
+                    {num} Minutes
                   </option>
                 ))}
               </select>
